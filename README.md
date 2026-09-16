@@ -79,18 +79,66 @@ Why we're raising prices in Q2.
 - Draws on [[competitor-analysis]]
 ```
 
-## Usage
+## How to run it
 
-From a Claude Code session with this repository (and the Google Drive connector enabled), just ask
-in plain language — the skill triggers on requests like:
+The `second-brain` skill runs inside **Claude Code** (CLI, desktop, or web). Skills load
+automatically when a repository containing `.claude/skills/` is open, so there's nothing to install
+beyond having this repo checked out.
+
+### 1. Open this repository in Claude Code
+
+```bash
+git clone https://github.com/uditigupta/Second-Brain.git
+cd Second-Brain
+claude            # start Claude Code in the repo
+```
+
+On Claude Code for web/desktop, just open a session on this repository. Make sure the **Google
+Drive** connector is enabled if you want to pull from Drive (Settings → Connectors).
+
+### 2. Invoke the skill
+
+Ask in plain language — the skill auto-triggers on requests like:
 
 - "Build my second brain from this Google Drive folder."
 - "Turn my Drive research into a knowledge base I can use with Claude and ChatGPT."
 - "Convert these docs into an Obsidian-style vault with a knowledge graph."
 
-The skill will ask you for the **source location** in Drive and the **output directory** before it
-touches any files, then walk through the steps above. If Google Drive isn't reachable, you can point
-it at a local folder of documents instead — the rest of the flow is identical.
+You can also invoke it explicitly by name:
+
+```
+/second-brain
+```
+
+### 3. Answer the two setup questions
+
+Before touching any files, the skill asks for:
+
+1. **Source location** — a Google Drive folder name/link or specific files. (No Drive? Point it at a
+   local folder instead — the rest of the flow is identical.)
+2. **Output directory** — where the generated brain should be written on disk.
+
+It then lists the files it found so you can confirm the scope, converts them, **interviews you**
+about what each document is and how they relate, wires the notes together, and generates `index.md`,
+`graph.json`, and `AGENTS.md`. Skim the converted notes and answer its questions — that's what turns
+a pile of files into a connected brain.
+
+### Running the helper scripts directly (optional)
+
+The two Python scripts also work standalone, if you just want to convert a document or rebuild the
+graph without the full guided flow:
+
+```bash
+# Convert a single document to a Markdown note
+python .claude/skills/second-brain/scripts/convert_to_md.py path/to/doc.pdf \
+    --out my-brain/notes --title "My Note"
+
+# (Re)generate index.md and graph.json from the notes, and report dangling links
+python .claude/skills/second-brain/scripts/build_graph.py my-brain
+```
+
+`convert_to_md.py` prints the exact `pip install` command if a converter backend is missing;
+`build_graph.py` is safe to re-run any time your notes change.
 
 ### Using the output with any AI tool
 
