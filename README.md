@@ -140,6 +140,34 @@ python .claude/skills/second-brain/scripts/build_graph.py my-brain
 `convert_to_md.py` prints the exact `pip install` command if a converter backend is missing;
 `build_graph.py` is safe to re-run any time your notes change.
 
+## Installing & sharing the skill
+
+There are three ways to get the skill into someone's Claude, from quickest to most portable:
+
+1. **Open this repo in Claude Code** — because the skill lives in `.claude/skills/second-brain/`, it
+   loads automatically for anyone with this repository open (see [How to run it](#how-to-run-it)).
+   Active only while working in this repo.
+
+2. **Install it globally** — copy the skill folder into your personal skills directory so it's
+   available in every Claude Code session, regardless of which project is open:
+
+   ```bash
+   git clone https://github.com/uditigupta/Second-Brain.git
+   cp -r Second-Brain/.claude/skills/second-brain ~/.claude/skills/second-brain
+   ```
+
+3. **Install from the packaged `.skill` file** — a single shareable file you can hand to anyone.
+   Download [`second-brain.skill`](./second-brain.skill) from this repo, open (or upload) it in
+   Claude, and click **Save skill** to install it into your profile. The button appears when your
+   org/account allows skill creation; if it doesn't, use option 1 or 2 instead.
+
+Whichever route you use, the skill is then invoked the same way — by asking in plain language or
+with `/second-brain`.
+
+> The bundled `second-brain.skill` is a packaged snapshot of `.claude/skills/second-brain/`. If you
+> change the skill, regenerate it with the skill-creator's `package_skill.py` so the download stays
+> in sync.
+
 ### Using the output with any AI tool
 
 Point your assistant at the generated folder and have it read `AGENTS.md` first. That file explains
